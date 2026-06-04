@@ -21,6 +21,7 @@
       color: #0a1a2f;
       scroll-behavior: smooth;
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
     /* Custom scroll */
@@ -41,13 +42,43 @@
       padding: 0 32px;
     }
 
-    /* Navigation */
+    /* ========== ANIMATIONS ========== */
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes glowPulse {
+      0% { box-shadow: 0 0 0 0 rgba(30, 47, 90, 0.2); }
+      70% { box-shadow: 0 0 0 10px rgba(30, 47, 90, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(30, 47, 90, 0); }
+    }
+    .animate-up {
+      animation: fadeUp 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+    .fade-in {
+      animation: fadeIn 1s ease forwards;
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    /* Navigation with Hamburger */
     .navbar {
       position: sticky;
       top: 0;
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(12px);
-      z-index: 100;
+      z-index: 1000;
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       padding: 1rem 0;
     }
@@ -71,7 +102,7 @@
       display: flex;
       gap: 2rem;
       align-items: center;
-      flex-wrap: wrap;
+      list-style: none;
     }
     .nav-links a {
       text-decoration: none;
@@ -95,6 +126,21 @@
     .btn-outline-sm:hover {
       background: #2c3e66;
       color: white;
+      transform: translateY(-2px);
+    }
+    /* Hamburger icon */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    .hamburger span {
+      width: 28px;
+      height: 2px;
+      background: #1E2F5A;
+      margin: 5px 0;
+      transition: 0.3s;
     }
 
     /* Buttons */
@@ -115,8 +161,8 @@
     }
     .btn-primary:hover {
       background: #10213f;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(30, 47, 90, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -8px rgba(30, 47, 90, 0.3);
     }
     .btn-secondary {
       background: transparent;
@@ -139,12 +185,27 @@
     /* Hero */
     .hero {
       padding: 5rem 0 4rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(30,47,90,0.03) 0%, rgba(255,255,255,0) 70%);
+      border-radius: 50%;
+      z-index: 0;
     }
     .hero-grid {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 3rem;
+      position: relative;
+      z-index: 1;
     }
     .hero-content {
       flex: 1.2;
@@ -158,6 +219,7 @@
       font-weight: 500;
       color: #1f3a6b;
       margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease;
     }
     .hero-content h1 {
       font-size: 3.3rem;
@@ -166,6 +228,7 @@
       letter-spacing: -0.02em;
       color: #0b1a32;
       margin-bottom: 1rem;
+      animation: fadeUp 0.6s 0.1s backwards;
     }
     .highlight {
       background: linear-gradient(120deg, #d9e2fc, #b8c6f0);
@@ -179,11 +242,13 @@
       color: #2c3e50;
       max-width: 90%;
       margin: 1.2rem 0 2rem;
+      animation: fadeUp 0.6s 0.2s backwards;
     }
     .hero-stats {
       display: flex;
       gap: 2rem;
       margin-top: 2rem;
+      animation: fadeUp 0.6s 0.3s backwards;
     }
     .hero-stats span {
       font-weight: 700;
@@ -193,18 +258,25 @@
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
+      animation: fadeUp 0.6s 0.15s backwards;
     }
     .hero-visual {
       flex: 0.8;
       background: linear-gradient(145deg, #eef2fa, #ffffff);
       border-radius: 3rem;
-      padding: 1rem;
+      padding: 1.5rem;
       text-align: center;
       box-shadow: 0 20px 35px -12px rgba(0,0,0,0.05);
+      animation: fadeIn 1s 0.2s backwards;
+      transition: transform 0.3s ease;
+    }
+    .hero-visual:hover {
+      transform: translateY(-8px);
     }
     .code-icon {
       font-size: 6rem;
       color: #2d4a8c;
+      animation: glowPulse 2s infinite;
     }
 
     /* Section headers */
@@ -216,11 +288,24 @@
       font-size: 2.2rem;
       font-weight: 700;
       color: #0e1e38;
+      position: relative;
+      display: inline-block;
+    }
+    .section-header h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #1E2F5A, #5a7bc2);
+      border-radius: 3px;
     }
     .section-header p {
       color: #4a5b7a;
       max-width: 600px;
-      margin: 0.5rem auto 0;
+      margin: 1rem auto 0;
     }
     .section {
       padding: 5rem 0;
@@ -243,12 +328,21 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.05);
       text-align: center;
       width: 140px;
-      transition: all 0.25s;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       border: 1px solid rgba(0,0,0,0.03);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s forwards;
     }
+    .skill-card:nth-child(1) { animation-delay: 0.05s; }
+    .skill-card:nth-child(2) { animation-delay: 0.1s; }
+    .skill-card:nth-child(3) { animation-delay: 0.15s; }
+    .skill-card:nth-child(4) { animation-delay: 0.2s; }
+    .skill-card:nth-child(5) { animation-delay: 0.25s; }
+    .skill-card:nth-child(6) { animation-delay: 0.3s; }
     .skill-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
       border-color: #cddcff;
     }
     .skill-card i {
@@ -271,22 +365,35 @@
       background: white;
       border-radius: 1.8rem;
       overflow: hidden;
-      transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.08);
       border: 1px solid #eef2f8;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.6s forwards;
     }
+    .project-card:nth-child(1) { animation-delay: 0.1s; }
+    .project-card:nth-child(2) { animation-delay: 0.2s; }
+    .project-card:nth-child(3) { animation-delay: 0.3s; }
+    .project-card:nth-child(4) { animation-delay: 0.4s; }
     .project-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 24px 40px -12px rgba(20, 40, 80, 0.2);
+      transform: translateY(-10px);
+      box-shadow: 0 28px 40px -12px rgba(20, 40, 80, 0.25);
     }
     .project-img {
       background: linear-gradient(135deg, #eef3fc, #e0eaff);
       padding: 2rem 1rem;
       text-align: center;
+      transition: 0.3s;
+    }
+    .project-card:hover .project-img i {
+      transform: scale(1.05);
+      color: #1a2f57;
     }
     .project-img i {
       font-size: 3.5rem;
       color: #2c3e66;
+      transition: transform 0.3s ease;
     }
     .project-info {
       padding: 1.8rem;
@@ -340,6 +447,10 @@
       padding: 2.5rem;
       box-shadow: 0 20px 35px -12px rgba(0,0,0,0.05);
       border: 1px solid #eef2fa;
+      transition: transform 0.3s;
+    }
+    .contact-wrapper:hover {
+      transform: translateY(-5px);
     }
     .contact-details {
       flex: 1;
@@ -364,6 +475,12 @@
       justify-content: center;
       font-size: 1.3rem;
       color: #1E2F5A;
+      transition: 0.2s;
+    }
+    .contact-item:hover .contact-icon {
+      background: #1E2F5A;
+      color: white;
+      transform: scale(1.05);
     }
     .contact-text a, .contact-text p {
       text-decoration: none;
@@ -404,6 +521,11 @@
       color: #1b2a44;
       border: 1px solid #e2e9f0;
       font-size: 0.95rem;
+      transition: 0.2s;
+    }
+    .fake-input:focus-within {
+      border-color: #1E2F5A;
+      background: white;
     }
     .fake-btn {
       background: #1E2F5A;
@@ -420,6 +542,8 @@
     }
     .fake-btn:hover {
       background: #0d2142;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px -6px rgba(30,47,90,0.3);
     }
 
     footer {
@@ -432,8 +556,13 @@
     footer a {
       color: #cbddfa;
       text-decoration: none;
+      transition: 0.2s;
+    }
+    footer a:hover {
+      color: white;
     }
 
+    /* Responsive */
     @media (max-width: 850px) {
       .container {
         padding: 0 24px;
@@ -450,8 +579,30 @@
       .contact-wrapper {
         flex-direction: column;
       }
-      .nav-flex {
+      .hamburger {
+        display: flex;
+      }
+      .nav-links {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 75%;
+        height: 100vh;
+        background: rgba(255,255,255,0.98);
+        backdrop-filter: blur(16px);
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transition: left 0.3s ease-in-out;
+        z-index: 1000;
+        box-shadow: 2px 0 20px rgba(0,0,0,0.05);
+      }
+      .nav-links.active {
+        left: 0;
+      }
+      .nav-flex {
+        width: 100%;
       }
     }
     @media (max-width: 500px) {
@@ -460,7 +611,7 @@
       }
       .hero-stats {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.8rem;
       }
     }
   </style>
@@ -470,13 +621,18 @@
 <nav class="navbar">
   <div class="container nav-flex">
     <div class="logo">O. AbdulMalik</div>
-    <div class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-      <a href="#contact" class="btn-outline-sm"><i class="fas fa-paper-plane"></i> Hire Me</a>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="btn-outline-sm"><i class="fas fa-paper-plane"></i> Hire Me</a></li>
+    </ul>
   </div>
 </nav>
 
@@ -526,7 +682,7 @@
     </div>
   </section>
 
-  <!-- Projects Section (with added Doltin and Nexla) -->
+  <!-- Projects Section (AsNek, Sonia, Doltin, Nexla) -->
   <section id="projects" class="section">
     <div class="container">
       <div class="section-header">
@@ -534,81 +690,42 @@
         <p>Live production apps demonstrating modern frontend craftsmanship</p>
       </div>
       <div class="projects-grid">
-        <!-- Project 1: AsNek -->
         <div class="project-card">
-          <div class="project-img">
-            <i class="fas fa-chart-line"></i>
-          </div>
+          <div class="project-img"><i class="fas fa-chart-line"></i></div>
           <div class="project-info">
             <h3>AsNek</h3>
-            <div class="project-tech">
-              <span class="tech-badge">React</span>
-              <span class="tech-badge">TypeScript</span>
-              <span class="tech-badge">Tailwind CSS</span>
-            </div>
-            <p>Interactive dashboard & data visualization platform with real-time updates. Built with React hooks, context API, and fully typed with TypeScript. Fully responsive and performance optimized.</p>
-            <a href="https://asnek.netlify.app" target="_blank" rel="noopener noreferrer" class="project-link">
-              Live Demo <i class="fas fa-external-link-alt"></i>
-            </a>
+            <div class="project-tech"><span class="tech-badge">React</span><span class="tech-badge">TypeScript</span><span class="tech-badge">Tailwind CSS</span></div>
+            <p>Interactive dashboard & data visualization platform with real-time updates. Built with React hooks, context API, and fully typed with TypeScript.</p>
+            <a href="https://asnek.netlify.app" target="_blank" class="project-link">Live Demo <i class="fas fa-external-link-alt"></i></a>
           </div>
         </div>
-        <!-- Project 2: Sonia's Portfolio -->
         <div class="project-card">
-          <div class="project-img">
-            <i class="fas fa-palette"></i>
-          </div>
+          <div class="project-img"><i class="fas fa-palette"></i></div>
           <div class="project-info">
             <h3>Sonia's Portfolio</h3>
-            <div class="project-tech">
-              <span class="tech-badge">HTML5/CSS3</span>
-              <span class="tech-badge">JavaScript</span>
-              <span class="tech-badge">GSAP</span>
-            </div>
-            <p>Elegant brand portfolio for a creative professional. Smooth scroll interactions, CSS grid magic, and fully accessible design. Optimized for all devices with modern animations.</p>
-            <a href="https://sonias.netlify.app" target="_blank" rel="noopener noreferrer" class="project-link">
-              Live Demo <i class="fas fa-external-link-alt"></i>
-            </a>
+            <div class="project-tech"><span class="tech-badge">HTML5/CSS3</span><span class="tech-badge">JavaScript</span><span class="tech-badge">GSAP</span></div>
+            <p>Elegant brand portfolio for a creative professional. Smooth scroll interactions, CSS grid magic, and fully accessible design.</p>
+            <a href="https://sonias.netlify.app" target="_blank" class="project-link">Live Demo <i class="fas fa-external-link-alt"></i></a>
           </div>
         </div>
-        <!-- Project 3: Doltin (new) -->
         <div class="project-card">
-          <div class="project-img">
-            <i class="fas fa-cloud-upload-alt"></i>
-          </div>
+          <div class="project-img"><i class="fas fa-cloud-upload-alt"></i></div>
           <div class="project-info">
             <h3>Doltin</h3>
-            <div class="project-tech">
-              <span class="tech-badge">React</span>
-              <span class="tech-badge">Firebase</span>
-              <span class="tech-badge">Styled Components</span>
-            </div>
-            <p>Streamlined file management and collaboration tool. Features real‑time sync, drag‑and‑drop uploads, and intuitive user dashboard. Built for efficiency and modern workflows.</p>
-            <a href="https://doltin.netlify.app" target="_blank" rel="noopener noreferrer" class="project-link">
-              Live Demo <i class="fas fa-external-link-alt"></i>
-            </a>
+            <div class="project-tech"><span class="tech-badge">React</span><span class="tech-badge">Firebase</span><span class="tech-badge">Styled Components</span></div>
+            <p>Streamlined file management and collaboration tool. Features real‑time sync, drag‑and‑drop uploads, and intuitive user dashboard.</p>
+            <a href="https://doltin.netlify.app" target="_blank" class="project-link">Live Demo <i class="fas fa-external-link-alt"></i></a>
           </div>
         </div>
-        <!-- Project 4: Nexla (new) -->
         <div class="project-card">
-          <div class="project-img">
-            <i class="fas fa-network-wired"></i>
-          </div>
+          <div class="project-img"><i class="fas fa-network-wired"></i></div>
           <div class="project-info">
             <h3>Nexla</h3>
-            <div class="project-tech">
-              <span class="tech-badge">Next.js</span>
-              <span class="tech-badge">TypeScript</span>
-              <span class="tech-badge">Tailwind</span>
-            </div>
-            <p>Modern SaaS landing page and analytics dashboard. Features server‑side rendering, dynamic routing, and a fully responsive layout with dark mode support.</p>
-            <a href="https://nexla.netlify.app" target="_blank" rel="noopener noreferrer" class="project-link">
-              Live Demo <i class="fas fa-external-link-alt"></i>
-            </a>
+            <div class="project-tech"><span class="tech-badge">Next.js</span><span class="tech-badge">TypeScript</span><span class="tech-badge">Tailwind</span></div>
+            <p>Modern SaaS landing page and analytics dashboard. Features server‑side rendering, dynamic routing, and dark mode support.</p>
+            <a href="https://nexla.netlify.app" target="_blank" class="project-link">Live Demo <i class="fas fa-external-link-alt"></i></a>
           </div>
         </div>
-      </div>
-      <div style="text-align: center; margin-top: 2.5rem;">
-        <p style="color: #4f6390;">⚡ More projects available upon request — collaborative and dedicated to clean code.</p>
       </div>
     </div>
   </section>
@@ -623,27 +740,10 @@
       <div class="contact-wrapper">
         <div class="contact-details">
           <h3>Get in touch</h3>
-          <div class="contact-item">
-            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-            <div class="contact-text">
-              <a href="mailto:olalekanabdulmalik78@gmail.com">olalekanabdulmalik78@gmail.com</a>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-            <div class="contact-text">
-              <a href="tel:+2349060237937">+234 906 023 7937</a>
-            </div>
-          </div>
-          <div class="contact-item">
-            <div class="contact-icon"><i class="fab fa-github"></i></div>
-            <div class="contact-text">
-              <p>github.com/Tech-by (portfolio showcase)</p>
-            </div>
-          </div>
-          <div class="contact-note">
-            <i class="fas fa-map-marker-alt"></i> Lagos, Nigeria · Available for freelance & remote contracts
-          </div>
+          <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div class="contact-text"><a href="mailto:olalekanabdulmalik78@gmail.com">olalekanabdulmalik78@gmail.com</a></div></div>
+          <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone-alt"></i></div><div class="contact-text"><a href="tel:+2349060237937">+234 906 023 7937</a></div></div>
+          <div class="contact-item"><div class="contact-icon"><i class="fab fa-github"></i></div><div class="contact-text"><p>github.com/Tech-by (portfolio showcase)</p></div></div>
+          <div class="contact-note"><i class="fas fa-map-marker-alt"></i> Lagos, Nigeria · Available for freelance & remote contracts</div>
         </div>
         <div class="contact-form-area">
           <p><i class="fas fa-paper-plane"></i> Prefer a quick message?</p>
@@ -662,27 +762,41 @@
 <footer>
   <div class="container">
     <p>© 2025 Olalekan AbdulMalik — Frontend Developer. Crafted with <i class="fas fa-heart" style="color: #b91c1c;"></i> using HTML, CSS & modern design.</p>
-    <p style="margin-top: 0.6rem; font-size: 0.8rem;">
-      <a href="#home">Home</a> • <a href="#skills">Skills</a> • <a href="#projects">Projects</a> • <a href="#contact">Contact</a>
-    </p>
+    <p style="margin-top: 0.6rem; font-size: 0.8rem;"><a href="#home">Home</a> • <a href="#skills">Skills</a> • <a href="#projects">Projects</a> • <a href="#contact">Contact</a></p>
   </div>
 </footer>
 
 <script>
-  document.querySelectorAll('.nav-links a, .btn-primary, .btn-secondary, .fake-btn, .project-link, a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const href = this.getAttribute('href');
-      if (href && href.startsWith('#') && href.length > 1) {
+  // Hamburger menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if (hamburger) {
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+  }
+  // Close menu on link click and smooth scroll
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      if (navLinks.classList.contains('active')) navLinks.classList.remove('active');
+      const hash = link.getAttribute('href');
+      if (hash && hash.startsWith('#')) {
         e.preventDefault();
-        const targetId = href.substring(1);
-        const target = document.getElementById(targetId);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        const target = document.querySelector(hash);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
-  console.log("Portfolio ready — Olalekan AbdulMalik Frontend | Projects: AsNek, Sonia, Doltin, Nexla");
+  // Contact form alert simulation
+  const fakeBtn = document.querySelector('.fake-btn');
+  if (fakeBtn) {
+    fakeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert("Thank you for your interest! Please use the email address to reach me directly. I'll reply within 24 hours.");
+    });
+  }
+  // Additional scroll animation for project cards already applied via CSS
+  console.log("Portfolio ready — animated & responsive");
 </script>
 </body>
 </html>
